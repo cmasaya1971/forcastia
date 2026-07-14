@@ -49,12 +49,6 @@ REALTIME_VOICE = os.environ.get("REALTIME_VOICE", "marin")
 app = FastAPI(title="Forecast Lab · Banrural — Demo")
 
 
-@app.get("/")
-def _root():
-    # En Vercel la raíz llega a la función; redirigimos al index estático (servido por el CDN).
-    return RedirectResponse(url="/index.html", status_code=307)
-
-
 def _json_default(o):
     if isinstance(o, decimal.Decimal):
         return float(o)
@@ -130,3 +124,15 @@ async def tool(request: Request):
         return _json(fn(**args))
     except Exception as e:
         return _json({"error": f"Error ejecutando {name}: {e}"}, status_code=500)
+
+
+# ---------------------------------------------------------------------------
+# Front-end estático servido por la MISMA función (montado al final para que las
+# rutas /api/* tengan prioridad). En Vercel, public/ se incluye vía includeFiles.
+# Sirve también en local a través de dev.py.
+# ---------------------------------------------------------------------------
+from fastapi.staticfiles import StaticFiles  # noqa: E402
+
+_PUBLIC = os.path.join(os.path.dirname(__file__), "..", "public")
+if os.path.isdir(_PUBLIC):
+    app.mount("/", StaticFiles(directory=_PUBLIC, html=True), name="static")

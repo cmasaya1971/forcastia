@@ -16,15 +16,9 @@ Conexión a la base:
 import os
 import sys
 
-# Reusar la app de la función de Vercel
+# Reusar la app de la función de Vercel (que ya monta los estáticos de public/)
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "api"))
 from index import app  # noqa: E402  (api/index.py)
-
-from fastapi.staticfiles import StaticFiles  # noqa: E402
-
-# Servir el front-end (en Vercel esto lo hace el CDN desde /public)
-_PUBLIC = os.path.join(os.path.dirname(__file__), "public")
-app.mount("/", StaticFiles(directory=_PUBLIC, html=True), name="static")
 
 if __name__ == "__main__":
     import uvicorn
