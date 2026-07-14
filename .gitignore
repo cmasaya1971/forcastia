@@ -1,0 +1,21 @@
+# Secretos — nunca versionar
+.env
+*.env
+!.env.example
+# .claude/settings.local.json contiene credenciales locales:
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node / Vercel
+node_modules/
+.vercel/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log

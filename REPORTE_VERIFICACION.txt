@@ -1,0 +1,117 @@
+############################################################################
+# REPORTE DE VERIFICACIÓN — base demoscoring (demo Verifiquemos · Banrural)
+# Generado con generate.py (SEED=42). Las 14 verificaciones se cumplen.
+# Incluye diferenciación de mora por producto (Tarjeta > Consumo > Pyme).
+#
+#   Mora por producto ....... Tarjeta 20.9% | Consumo 14.2% | Pyme 10.2%   OK
+#   V1  Curva por banda ...... 6.1<16.1<21.9<27.2 %, ratio 4.44x           OK
+#   V2  Adverse media ........ 36.7 % vs 10.6 %                            OK
+#   V3  Biometria baja ....... 21.7 % vs 1.2 %                             OK
+#   V4  PEP A4 vs E1 ......... 43.2 % vs 13.0 %                            OK
+#   V5  Score por cosecha .... 32.7 -> 46.0                                OK
+#   V6  Crecimiento PEP ...... 1178/1330/1480/1680/1900                    OK
+#   V7  D1 pre-cualificados .. 4,300                                       OK
+#   V8  B4 silencioso ........ 210                                         OK
+#   V9  C6 medio sin seguro .. 3,495                                       OK
+#   V10 VERITAS .............. C 28.3 % >> A 0.0 %                          OK
+#   V11 Coherencia LSTM ...... 0 y 0                                       OK
+#   V12 Demografico C4 ....... 26.2 % vs 14.2 % cartera                    OK
+#   V13 Integridad score ..... 0 errores                                   OK
+#   V14 Integridad referencial 0 / 0 / 0 / 0                               OK
+############################################################################
+
+=== V1 · Curva de mora monótona por banda (R1) — debe ser CRECIENTE, ratio Alto/Bajo 4-5.5x ===
+ banda_score | clientes | pct_mora 
+-------------+----------+----------
+ Bajo        |    11245 |      6.1
+ Medio       |     5477 |     16.1
+ Medio-alto  |     5226 |     21.9
+ Alto        |     3052 |     27.2
+
+=== V2 · Adverse media predice mora (~41% vs ~9%) ===
+       grupo       | clientes | pct_mora 
+-------------------+----------+----------
+ Con adverse media |     3434 |     36.7
+ Sin adverse media |    21566 |     10.6
+
+=== V3 · Biometría baja -> mas default temprano (~6x) ===
+    grupo     | clientes | pct_default_temprano 
+--------------+----------+----------------------
+ Facial >= 85 |    24250 |                 1.22
+ Facial < 85  |      750 |                21.73
+
+=== V4 · PEP peligroso (A4) vs PEP inofensivo (E1) — ~33% vs ~8% ===
+ arquetipo | clientes | pct_mora 
+-----------+----------+----------
+ A4        |      375 |     43.2
+ E1        |     1500 |     13.0
+
+=== V5 · Deterioro de originación por cosecha (R2): score sube 31 -> 44 ===
+ cohorte | score_promedio | clientes 
+---------+----------------+----------
+    2021 |           32.7 |     3000
+    2022 |           35.9 |     4000
+    2023 |           38.5 |     5000
+    2024 |           43.4 |     6000
+    2025 |           46.0 |     7000
+
+=== V6 · Crecimiento PEP ~10% interanual (R3) ===
+ cohorte | pep_con_credito 
+---------+-----------------
+    2021 |            1178
+    2022 |            1330
+    2023 |            1480
+    2024 |            1680
+    2025 |            1900
+
+=== V7 · Segmento pre-cualificado D1 (~4,300) ===
+ d1_clientes 
+-------------
+        4300
+
+=== V8 · Deteriorado silencioso B4 (~210, limpios al inicio pero LSTM > 65%) ===
+ b4_detectados 
+---------------
+           210
+
+=== V9 · Riesgo medio sin seguro C6 (~3,200) ===
+ medio_sin_seguro 
+------------------
+             3495
+
+=== V10 · VERITAS predijo la mora (C ~38% vs A ~6%) ===
+ comportamiento_pago | clientes | pct_mora 
+---------------------+----------+----------
+ A                   |     8213 |      0.0
+ B                   |     9078 |     18.8
+ C                   |     2954 |     28.3
+
+=== V11 · Coherencia LSTM (R5) — AMBOS deben dar 0 ===
+            problema            | n 
+--------------------------------+---
+ INCOHERENCIA: D1 con prob alta | 0
+ INCOHERENCIA: C1 con prob baja | 0
+
+=== V12 · Perfil demográfico de riesgo C4 (soltero joven Noroccidente) ===
+ pct_mora | clientes 
+----------+----------
+     26.2 |      868
+
+=== V12b · Mora promedio de toda la cartera (referencia para V12) ===
+ pct_mora_cartera 
+------------------
+             14.2
+
+=== V13 · Integridad del score: suma de subfactores = score_total (DEBE dar 0) ===
+ errores_score 
+---------------
+             0
+
+=== V14 · Integridad referencial: crédito tiene VERITAS y LSTM; tarjeta NO (AMBOS 0) ===
+             problema              | n 
+-----------------------------------+---
+ Tarjetas CON VERITAS (no debería) | 0
+ Tarjetas CON LSTM (no debería)    | 0
+ Créditos sin VERITAS              | 0
+ Créditos sin LSTM                 | 0
+

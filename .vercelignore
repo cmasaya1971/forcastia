@@ -1,0 +1,14 @@
+# Nunca subir secretos ni lo que no necesita la nube
+.env
+*.env
+.claude/
+share/
+app/
+__pycache__/
+**/__pycache__/
+*.md
+schema.sql
+generate.py
+verify.sql
+REPORTE_VERIFICACION.txt
+ESPECIFICACION_GENERACION_DATOS.md
