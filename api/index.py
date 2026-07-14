@@ -37,7 +37,7 @@ except Exception:
 
 import httpx
 from fastapi import FastAPI, Request
-from fastapi.responses import Response, JSONResponse
+from fastapi.responses import Response, JSONResponse, RedirectResponse
 
 import _tools as T
 from _instructions import SYSTEM_INSTRUCTIONS, TOOL_SCHEMAS
@@ -47,6 +47,12 @@ REALTIME_MODEL = os.environ.get("REALTIME_MODEL", "gpt-realtime")
 REALTIME_VOICE = os.environ.get("REALTIME_VOICE", "marin")
 
 app = FastAPI(title="Forecast Lab · Banrural — Demo")
+
+
+@app.get("/")
+def _root():
+    # En Vercel la raíz llega a la función; redirigimos al index estático (servido por el CDN).
+    return RedirectResponse(url="/index.html", status_code=307)
 
 
 def _json_default(o):
