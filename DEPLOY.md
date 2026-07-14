@@ -40,31 +40,25 @@ Necesitás dos cosas gratis: una base **Neon** (Postgres en la nube) y una cuent
 
 ---
 
-## Parte B · Deploy en Vercel (~5 min)
+## Parte B · Deploy en Vercel desde GitHub (~5 min)
 
-1. Instalá la CLI (requiere Node):
-   ```bash
-   npm i -g vercel
-   vercel login
-   ```
-2. En la carpeta del proyecto, primer deploy (preview):
-   ```bash
-   vercel
-   ```
-   Aceptá los prompts (link/create project, root = esta carpeta).
-3. Configurá las **variables de entorno** (Production):
-   ```bash
-   vercel env add OPENAI_API_KEY production
-   vercel env add DATABASE_URL production
-   vercel env add REALTIME_MODEL production      # valor: gpt-realtime   (opcional)
-   vercel env add REALTIME_VOICE production       # valor: marin          (opcional)
-   ```
-   (o en el dashboard: Settings → Environment Variables)
-4. Deploy a producción:
-   ```bash
-   vercel --prod
-   ```
-5. Vercel te da una **URL pública** `https://...vercel.app`. Esa es la que compartís.
+El repo ya está en **https://github.com/cmasaya1971/forcastia**. Vercel se conecta a él y
+redeploya solo en cada `git push`.
+
+1. Entrá a **https://vercel.com** → *Add New… → Project*.
+2. *Import Git Repository* → elegí **cmasaya1971/forcastia** (autorizá GitHub si lo pide).
+3. En la pantalla de configuración, **antes de "Deploy"**, abrí *Environment Variables* y agregá:
+   | Name | Value |
+   |---|---|
+   | `OPENAI_API_KEY` | tu key de OpenAI (`sk-proj-...`) |
+   | `DATABASE_URL` | el connection string de Neon |
+   | `REALTIME_MODEL` | `gpt-realtime` (opcional) |
+   | `REALTIME_VOICE` | `marin` (opcional) |
+4. **Deploy**. Vercel detecta `requirements.txt` (función Python en `api/`) y sirve `public/`.
+5. Te da la **URL pública** `https://forcastia-xxxx.vercel.app`. Esa la compartís.
+
+> Cada vez que hagamos `git push` a `main`, Vercel redeploya automáticamente.
+> Si agregás/ cambiás env vars después, usá *Deployments → Redeploy* para que tomen efecto.
 
 ---
 
