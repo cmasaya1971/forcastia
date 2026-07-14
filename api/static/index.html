@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sistema de Análisis · Forecast Lab · Banrural</title>
+  <link rel="icon" href="logo-icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- ===================== HEADER ===================== -->
+    <header class="topbar">
+      <div class="brand">
+        <img id="brand-logo" class="brand-logo" src="logo.png" alt="Forecast Lab" />
+        <div class="brand-divider"></div>
+        <div class="brand-text">
+          <div class="brand-title">Sistema de Análisis de Comportamiento, Patrones y Proyecciones</div>
+          <div class="brand-sub">Banrural · Comité de Riesgos</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button id="guide-btn" class="ghost-btn">¿Qué puedo preguntar?</button>
+        <div id="status" class="status status--idle">
+          <span class="status-dot"></span><span id="status-text">Desconectado</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================== MAIN GRID ===================== -->
+    <main class="grid">
+      <!-- Columna izquierda: orb + transcripción -->
+      <aside class="panel side">
+        <div class="voice-panel">
+          <div id="orb" class="orb" role="button" tabindex="0" title="Iniciar conversación">
+            <div class="orb-ring r1"></div>
+            <div class="orb-ring r2"></div>
+            <div class="orb-core"><span class="orb-mic">🎙</span></div>
+          </div>
+          <canvas id="wave" class="wave" width="560" height="150"></canvas>
+          <div id="orb-caption" class="orb-caption">Presione para iniciar la conversación</div>
+          <div id="voice-controls" class="voice-controls" hidden>
+            <button id="mute-btn" class="mini-btn">
+              <span id="mute-ico">🎙</span><span id="mute-label">Silenciar</span>
+            </button>
+            <button id="end-btn" class="mini-btn danger">Terminar</button>
+          </div>
+        </div>
+        <div class="transcript-head">Conversación</div>
+        <div id="transcript" class="transcript"></div>
+      </aside>
+
+      <!-- Columna principal -->
+      <section class="panel stage">
+        <!-- Guía tipo "How To" -->
+        <div id="stage-guide" class="guide">
+          <div class="guide-head">
+            <h1>¿En qué puedo ayudarle hoy?</h1>
+            <p>Soy su asistente experto en <strong>comportamiento, patrones y proyecciones</strong>
+               de la cartera. Puede preguntarme por voz, o elegir una de estas preguntas por tema:</p>
+          </div>
+          <div id="guide-cats" class="guide-cats"></div>
+        </div>
+
+        <!-- Lienzo dinámico de resultados -->
+        <div id="stage-content" class="stage-content" hidden>
+          <div class="stage-title-row">
+            <h2 id="viz-title">—</h2>
+            <button id="back-btn" class="ghost-btn small">← Volver a la guía</button>
+          </div>
+          <p id="viz-resumen" class="viz-resumen"></p>
+          <div id="viz-kpis" class="kpi-row"></div>
+          <div id="viz-body" class="viz-body"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <audio id="remote-audio" autoplay></audio>
+  <script src="app.js"></script>
+</body>
+</html>

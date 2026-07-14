@@ -133,6 +133,10 @@ async def tool(request: Request):
 # ---------------------------------------------------------------------------
 from fastapi.staticfiles import StaticFiles  # noqa: E402
 
-_PUBLIC = os.path.join(os.path.dirname(__file__), "..", "public")
-if os.path.isdir(_PUBLIC):
-    app.mount("/", StaticFiles(directory=_PUBLIC, html=True), name="static")
+# Estáticos: primero api/static (siempre incluido en la función de Vercel), luego
+# ../public como respaldo (útil en local). Se usa el primero que exista.
+_HERE = os.path.dirname(__file__)
+for _cand in (os.path.join(_HERE, "static"), os.path.join(_HERE, "..", "public")):
+    if os.path.isdir(_cand):
+        app.mount("/", StaticFiles(directory=_cand, html=True), name="static")
+        break
